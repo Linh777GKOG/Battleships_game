@@ -253,3 +253,49 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   rotateButton.addEventListener('click', rotate)
+
+
+  function dragEnd() {
+    // console.log('dragend')
+  }
+
+  // Game Logic for MultiPlayer
+  function playGameMulti(socket) {
+    setupButtons.style.display = 'none'
+    if(isGameOver) return
+    if(!ready) {
+      socket.emit('player-ready')
+      ready = true
+      playerReady(playerNum)
+    }
+
+    if(enemyReady) {
+      if(currentPlayer === 'user') {
+        turnDisplay.innerHTML = 'Your Go'
+      }
+      if(currentPlayer === 'enemy') {
+        turnDisplay.innerHTML = "Enemy's Go"
+      }
+    }
+  }
+
+  function playerReady(num) {
+    let player = `.p${parseInt(num) + 1}`
+    document.querySelector(`${player} .ready`).classList.toggle('active')
+  }
+
+  // Game Logic for Single Player
+  function playGameSingle() {
+    if (isGameOver) return
+    if (currentPlayer === 'user') {
+      turnDisplay.innerHTML = 'Your Go'
+      computerSquares.forEach(square => square.addEventListener('click', function(e) {
+        shotFired = square.dataset.id
+        revealSquare(square.classList)
+      }))
+    }
+    if (currentPlayer === 'enemy') {
+      turnDisplay.innerHTML = 'Computers Go'
+      setTimeout(enemyGo, 1000)
+    }
+  }
