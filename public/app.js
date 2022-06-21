@@ -62,3 +62,48 @@ document.addEventListener('DOMContentLoaded', () => {
       ]
     },
   ]
+
+   createBoard(userGrid, userSquares)
+  createBoard(computerGrid, computerSquares)
+
+  // Select Player Mode
+  if (gameMode === 'singlePlayer') {
+    startSinglePlayer()
+  } else {
+    startMultiPlayer()
+  }
+
+  // Multiplayer
+  function startMultiPlayer() {
+    const socket = io();
+
+    // Get your player number
+    socket.on('player-number', num => {
+      if (num === -1) {
+        infoDisplay.innerHTML = "Sorry, the server is full"
+      } else {
+        playerNum = parseInt(num)
+        if(playerNum === 1) currentPlayer = "enemy"
+
+        console.log(playerNum)
+
+        // Get other player status
+        socket.emit('check-players')
+      }
+    })
+
+    // Another player has connected or disconnected
+    socket.on('player-connection', num => {
+      console.log(`Player number ${num} has connected or disconnected`)
+      playerConnectedOrDisconnected(num)
+    })
+
+    // On enemy ready
+    socket.on('enemy-ready', num => {
+      enemyReady = true
+      playerReady(num)
+      if (ready) {
+        playGameMulti(socket)
+        setupButtons.style.display = 'none'
+      }
+    })
