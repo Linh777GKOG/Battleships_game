@@ -156,3 +156,34 @@ body {
     transform: scaleY(1.5);
   }
 }
+
+.grid-display {
+  display: flex;
+}
+
+.ship > div {
+  width: 4.6vmin;
+  height: 4.6vmin;
+}
+
+.ship {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1vmin;
+  width: calc(4.6vmin * var(--width, 1));
+  height: calc(4.6vmin * var(--height, 1));
+  border-radius: 2.3vmin;
+}
+
+.battleship-grid div {
+  border: 1px solid hsla(0, 0%, 100%, 0.2);
+}
+
+.destroyer-container {
+  --width: 2;
+}
+
+.destroyer-container-vertical {
+  --height: 2;
+  --width: 1;
+}
