@@ -264,3 +264,42 @@ body {
 .boom {
   animation: boom 0.2s ease-out forwards;
 }
+
+@keyframes hit {
+  0% {
+    opacity: 1;
+    transform: scale(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(4);
+  }
+}
+
+@keyframes boom {
+  0% {
+    background-color: red;
+  }
+
+  100% {
+    background-color: hsl(0, 0%, 80%);
+  }
+}
+
+.player {
+  margin: 2vmin;
+}
+
+.connected,
+.ready {
+  font-weight: normal;
+  opacity: 0.25;
+  text-decoration: line-through;
+}
+
+.connected.active,
+.ready.active {
+  opacity: 1;
+  text-decoration: none;
+}
