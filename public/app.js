@@ -299,3 +299,52 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(enemyGo, 1000)
     }
   }
+
+  let destroyerCount = 0
+  let submarineCount = 0
+  let cruiserCount = 0
+  let battleshipCount = 0
+  let carrierCount = 0
+
+  function revealSquare(classList) {
+    const enemySquare = computerGrid.querySelector(`div[data-id='${shotFired}']`)
+    const obj = Object.values(classList)
+    if (!enemySquare.classList.contains('boom') && currentPlayer === 'user' && !isGameOver) {
+      if (obj.includes('destroyer')) destroyerCount++
+      if (obj.includes('submarine')) submarineCount++
+      if (obj.includes('cruiser')) cruiserCount++
+      if (obj.includes('battleship')) battleshipCount++
+      if (obj.includes('carrier')) carrierCount++
+    }
+    if (obj.includes('taken')) {
+      enemySquare.classList.add('boom')
+    } else {
+      enemySquare.classList.add('miss')
+    }
+    checkForWins()
+    currentPlayer = 'enemy'
+    if(gameMode === 'singlePlayer') playGameSingle()
+  }
+
+  let cpuDestroyerCount = 0
+  let cpuSubmarineCount = 0
+  let cpuCruiserCount = 0
+  let cpuBattleshipCount = 0
+  let cpuCarrierCount = 0
+
+
+  function enemyGo(square) {
+    if (gameMode === 'singlePlayer') square = Math.floor(Math.random() * userSquares.length)
+    if (!userSquares[square].classList.contains('boom')) {
+      const hit = userSquares[square].classList.contains('taken')
+      userSquares[square].classList.add(hit ? 'boom' : 'miss')
+      if (userSquares[square].classList.contains('destroyer')) cpuDestroyerCount++
+      if (userSquares[square].classList.contains('submarine')) cpuSubmarineCount++
+      if (userSquares[square].classList.contains('cruiser')) cpuCruiserCount++
+      if (userSquares[square].classList.contains('battleship')) cpuBattleshipCount++
+      if (userSquares[square].classList.contains('carrier')) cpuCarrierCount++
+      checkForWins()
+    } else if (gameMode === 'singlePlayer') enemyGo()
+    currentPlayer = 'user'
+    turnDisplay.innerHTML = 'Your Go'
+  }
